@@ -4,3 +4,10 @@
 .markdownlint.yaml
 .shellcheckrc
 .trunk/
+
+# File extensions
+*.pt
+*.pth
+
+# Directories
+/__pycache__

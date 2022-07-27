@@ -302,22 +302,20 @@ class MetricLogger(object):
             )
         )
 
-
 def get_sha():
     cwd = os.path.dirname(os.path.abspath(__file__))
 
     def _run(command):
-        return subprocess.check_output(command, cwd=cwd).decode("ascii").strip()
-
-    sha = "N/A"
+        return subprocess.check_output(command, cwd=cwd).decode('ascii').strip()
+    sha = 'N/A'
     diff = "clean"
-    branch = "N/A"
+    branch = 'N/A'
     try:
-        sha = _run(["git", "rev-parse", "HEAD"])
-        subprocess.check_output(["git", "diff"], cwd=cwd)
-        diff = _run(["git", "diff-index", "HEAD"])
+        sha = _run(['git', 'rev-parse', 'HEAD'])
+        subprocess.check_output(['git', 'diff'], cwd=cwd)
+        diff = _run(['git', 'diff-index', 'HEAD'])
         diff = "has uncommited changes" if diff else "clean"
-        branch = _run(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+        branch = _run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
     except Exception:
         pass
     message = f"sha: {sha}, status: {diff}, branch: {branch}"
@@ -325,9 +323,6 @@ def get_sha():
 
 
 def is_dist_avail_and_initialized():
-    """
-    judge whether distributed training is available and well-initialized
-    """
     if not dist.is_available():
         return False
     if not dist.is_initialized():
@@ -336,34 +331,22 @@ def is_dist_avail_and_initialized():
 
 
 def get_world_size():
-    """
-    get the world size
-    """
     if not is_dist_avail_and_initialized():
         return 1
     return dist.get_world_size()
 
 
 def get_rank():
-    """
-    get the rank
-    """
     if not is_dist_avail_and_initialized():
         return 0
     return dist.get_rank()
 
 
 def is_main_process():
-    """
-    judge whether the current node is the master node
-    """
     return get_rank() == 0
 
 
 def save_on_master(*args, **kwargs):
-    """
-    save checkpoint on the master node
-    """
     if is_main_process():
         torch.save(*args, **kwargs)
 
@@ -373,86 +356,200 @@ def setup_for_distributed(is_master):
     This function disables printing when not in master process
     """
     import builtins as __builtin__
-
     builtin_print = __builtin__.print
 
     def print(*args, **kwargs):
-        force = kwargs.pop("force", False)
+        force = kwargs.pop('force', False)
         if is_master or force:
             builtin_print(*args, **kwargs)
 
     __builtin__.print = print
 
 
-def init_distributed_ddpjob(args=None):
-    """
-    initialize the ddp job
-    """
-    if dist.is_available() and dist.is_initialized():
-        return dist.get_world_size(), dist.get_rank()
-
-    try:
-        os.environ["MASTER_PORT"] = "40101"
-        torch.distributed.init_process_group(backend="nccl")
-    except Exception:
-        world_size, rank = 1, 0
-        print("distributed training not available")
-
-    world_size = dist.get_world_size()
-    rank = dist.get_rank()
-    args.gpu = args.rank
-    args.world_size, args.rank = world_size, rank
-    return world_size, rank
-
-
 def init_distributed_mode(args):
-    """
-    initialize the normal job
-    """
     # launched with torch.distributed.launch
-    if "RANK" in os.environ and "WORLD_SIZE" in os.environ:
-        args.rank = int(os.environ["RANK"])
-        args.world_size = int(os.environ["WORLD_SIZE"])
-        args.gpu = int(os.environ.get("LOCAL_RANK", 0))
-        print(
-            "args.rank",
-            args.rank,
-            "args.world_size",
-            args.world_size,
-            "args.gpu",
-            args.gpu,
-        )
-        print("get_rank()", get_rank())
-    # launched with submitit on a slurm cluster
-    elif "SLURM_PROCID" in os.environ:
-        args.rank = int(os.environ["SLURM_PROCID"])
+    if 'RANK' in os.environ and 'WORLD_SIZE' in os.environ:
+        print('Launced with torch.distributed.launch')
+        args.world_size = int(os.environ['WORLD_SIZE'])
+        args.rank = int(os.environ['SLURM_PROCID'])
         args.gpu = args.rank % torch.cuda.device_count()
-    # launched naively with `python main_dino.py`
-    # we manually add MASTER_ADDR and MASTER_PORT to env variables
+        print('world size, rank, gpu, device count:', args.world_size, args.rank, args.gpu, torch.cuda.device_count())
+    # launched with submitit on a slurm cluster
+    elif 'SLURM_PROCID' in os.environ:
+        print('Launced with slurm')
+        args.world_size = int(os.environ['WORLD_SIZE'])
+        args.rank = int(os.environ['SLURM_PROCID'])
+        args.gpu = args.rank % torch.cuda.device_count()
+        print('world size, rank, gpu, device count:', args.world_size, args.rank, args.gpu, torch.cuda.device_count())
     elif torch.cuda.is_available():
-        print("Will run the code on one GPU.")
+        # launched naively with `python main_dino.py`
+        # we manually add MASTER_ADDR and MASTER_PORT to env variables
+        print('Will run the code on one GPU.')
         args.rank, args.gpu, args.world_size = 0, 0, 1
-        os.environ["MASTER_ADDR"] = "127.0.0.1"
-        os.environ["MASTER_PORT"] = "2950"
+        os.environ['MASTER_ADDR'] = '127.0.0.1'
+        os.environ['MASTER_PORT'] = '29500'
     else:
-        print("Does not support training without GPU.")
+        print('Does not support training without GPU.')
         sys.exit(1)
 
-    os.environ["MASTER_PORT"] = "6542"
-
-    dist.init_process_group(
-        backend="nccl",
-        init_method=args.dist_url,
-        world_size=args.world_size,
-        rank=args.rank,
-    )
-
+    dist.init_process_group(backend="nccl", init_method=args.dist_url, world_size=args.world_size, rank=args.rank)
     torch.cuda.set_device(args.gpu)
-    print(
-        "| distributed init (rank {}): {}".format(args.rank, args.dist_url), flush=True
-    )
+    print('| distributed init (rank {}): {}'.format(args.rank, args.dist_url), flush=True)
     dist.barrier()
+
     setup_for_distributed(args.rank == 0)
+
+
+# def get_sha():
+#     cwd = os.path.dirname(os.path.abspath(__file__))
+
+#     def _run(command):
+#         return subprocess.check_output(command, cwd=cwd).decode("ascii").strip()
+
+#     sha = "N/A"
+#     diff = "clean"
+#     branch = "N/A"
+#     try:
+#         sha = _run(["git", "rev-parse", "HEAD"])
+#         subprocess.check_output(["git", "diff"], cwd=cwd)
+#         diff = _run(["git", "diff-index", "HEAD"])
+#         diff = "has uncommited changes" if diff else "clean"
+#         branch = _run(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+#     except Exception:
+#         pass
+#     message = f"sha: {sha}, status: {diff}, branch: {branch}"
+#     return message
+
+
+# def is_dist_avail_and_initialized():
+#     """
+#     judge whether distributed training is available and well-initialized
+#     """
+#     if not dist.is_available():
+#         return False
+#     if not dist.is_initialized():
+#         return False
+#     return True
+
+
+# def get_world_size():
+#     """
+#     get the world size
+#     """
+#     if not is_dist_avail_and_initialized():
+#         return 1
+#     return dist.get_world_size()
+
+
+# def get_rank():
+#     """
+#     get the rank
+#     """
+#     if not is_dist_avail_and_initialized():
+#         return 0
+#     return dist.get_rank()
+
+
+# def is_main_process():
+#     """
+#     judge whether the current node is the master node
+#     """
+#     return get_rank() == 0
+
+
+# def save_on_master(*args, **kwargs):
+#     """
+#     save checkpoint on the master node
+#     """
+#     if is_main_process():
+#         torch.save(*args, **kwargs)
+
+
+# def setup_for_distributed(is_master):
+#     """
+#     This function disables printing when not in master process
+#     """
+#     import builtins as __builtin__
+
+#     builtin_print = __builtin__.print
+
+#     def print(*args, **kwargs):
+#         force = kwargs.pop("force", False)
+#         if is_master or force:
+#             builtin_print(*args, **kwargs)
+
+#     __builtin__.print = print
+
+
+# def init_distributed_ddpjob(args=None):
+#     """
+#     initialize the ddp job
+#     """
+#     if dist.is_available() and dist.is_initialized():
+#         return dist.get_world_size(), dist.get_rank()
+
+#     try:
+#         os.environ["MASTER_PORT"] = "40101"
+#         torch.distributed.init_process_group(backend="nccl")
+#     except Exception:
+#         world_size, rank = 1, 0
+#         print("distributed training not available")
+
+#     world_size = dist.get_world_size()
+#     rank = dist.get_rank()
+#     args.gpu = args.rank
+#     args.world_size, args.rank = world_size, rank
+#     return world_size, rank
+
+
+# def init_distributed_mode(args):
+#     """
+#     initialize the normal job
+#     """
+#     # launched with torch.distributed.launch
+#     if "RANK" in os.environ and "WORLD_SIZE" in os.environ:
+#         args.rank = int(os.environ["RANK"])
+#         args.world_size = int(os.environ['WORLD_SIZE'])
+#         args.gpu = int(os.environ['LOCAL_RANK'])
+#         print(
+#             "args.rank",
+#             args.rank,
+#             "args.world_size",
+#             args.world_size,
+#             "args.gpu",
+#             args.gpu,
+#         )
+#         print("get_rank()", get_rank())
+#     # launched with submitit on a slurm cluster
+#     elif "SLURM_PROCID" in os.environ:
+#         args.rank = int(os.environ["SLURM_PROCID"])
+#         args.gpu = args.rank % torch.cuda.device_count()
+#     # launched naively with `python main_dino.py`
+#     # we manually add MASTER_ADDR and MASTER_PORT to env variables
+#     elif torch.cuda.is_available():
+#         print("Will run the code on one GPU.")
+#         args.rank, args.gpu, args.world_size = 0, 0, 1
+#         os.environ["MASTER_ADDR"] = "127.0.0.1"
+#         os.environ["MASTER_PORT"] = "2950"
+#     else:
+#         print("Does not support training without GPU.")
+#         sys.exit(1)
+
+#     os.environ["MASTER_PORT"] = "6542"
+
+#     dist.init_process_group(
+#         backend="nccl",
+#         init_method=args.dist_url,
+#         world_size=args.world_size,
+#         rank=args.rank,
+#     )
+
+#     torch.cuda.set_device(args.gpu)
+#     print(
+#         "| distributed init (rank {}): {}".format(args.rank, args.dist_url), flush=True
+#     )
+#     dist.barrier()
+#     setup_for_distributed(args.rank == 0)
 
 
 def accuracy(output, target, topk=(1,)):

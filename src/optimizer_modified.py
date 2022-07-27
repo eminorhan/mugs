@@ -187,9 +187,7 @@ def get_optimizer(student, len_dataloader, args):
 
     # ============ init schedulers ... ============
     lr_schedule = cosine_scheduler(
-        args.lr
-        * (args.batch_size_per_gpu * utils.get_world_size())
-        / 256.0,  # linear scaling rule
+        args.lr * args.batch_size / 256.0,  # linear scaling rule
         args.min_lr,
         args.epochs,
         len_dataloader,
@@ -202,7 +200,9 @@ def get_optimizer(student, len_dataloader, args):
         len_dataloader,  # len(data_loader),
     )
     # momentum parameter is increased to 1. during training with a cosine schedule
-    momentum_schedule = cosine_scheduler(args.momentum_teacher, 1, args.epochs, len_dataloader)
+    momentum_schedule = cosine_scheduler(
+        args.momentum_teacher, 1, args.epochs, len_dataloader
+    )
     print("Loss, optimizer and schedulers ready.")
 
     return optimizer, fp16_scaler, lr_schedule, wd_schedule, momentum_schedule

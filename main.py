@@ -21,6 +21,7 @@ import math
 import os
 import sys
 import time
+import builtins
 from collections import OrderedDict
 from pathlib import Path
 
@@ -28,6 +29,7 @@ import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
 from torchvision import models as torchvision_models
+import torch.distributed as dist
 
 import utils
 from src.loss import get_multi_granular_loss
@@ -48,124 +50,38 @@ def get_args_parser():
     parser = argparse.ArgumentParser("Mugs", add_help=False)
 
     ##======== Model parameters ============
-    parser.add_argument(
-        "--arch",
-        type=str,
-        default="vit_small",
-        choices=["vit_small", "vit_base", "vit_large"],
-        help="""Name of architecture to train.""",
-    )
-    parser.add_argument(
-        "--patch_size",
-        type=int,
-        default=16,
-        help="""Size in pixels
+    parser.add_argument("--arch", type=str, default="vit_small", choices=["vit_small", "vit_base", "vit_large"], help="""Name of architecture to train.""")
+    parser.add_argument("--patch_size", type=int, default=16, help="""Size in pixels
         of input square patches - default 16 (for 16x16 patches). Using smaller
         values leads to better performance but requires more memory. Applies only
         for ViTs (vit_small and vit_base). If <16, we recommend disabling
-        mixed precision training (--use_fp16 false) to avoid unstabilities.""",
+        mixed precision training (--use_fp16 false) to avoid instabilities.""",
     )
 
     ##======== Training/Optimization parameters ============
-    parser.add_argument(
-        "--momentum_teacher",
-        type=float,
-        default=0.996,
-        help="""Base EMA
+    parser.add_argument("--momentum_teacher", type=float, default=0.996, help="""Base EMA
         parameter for teacher update. The value is increased to 1 during training with
         cosine schedule. We recommend setting a higher value with small batches: for
         example use 0.9995 with batch size of 256.""",
     )
-    parser.add_argument(
-        "--use_fp16",
-        type=utils.bool_flag,
-        default=False,
-        help="""Whether or not
+    parser.add_argument("--use_fp16", type=utils.bool_flag, default=True, help="""Whether or not
         to use half precision for training. Improves training time and memory requirements,
         but can provoke instability and slight decay of performance. We recommend disabling
         mixed precision if the loss is unstable, if reducing the patch size or if training
         with bigger ViTs.""",
     )
-    parser.add_argument(
-        "--weight_decay",
-        type=float,
-        default=0.04,
-        help="""Initial value of the
-        weight decay. With ViT, a smaller value at the beginning of training works well.""",
-    )
-    parser.add_argument(
-        "--weight_decay_end",
-        type=float,
-        default=0.2,
-        help="""Final value of the
-        weight decay. We use a cosine schedule for WD and using a larger decay by
-        the end of training improves performance for ViTs.""",
-    )
-    parser.add_argument(
-        "--clip_grad",
-        type=float,
-        default=3.0,
-        help="""Maximal parameter
-        gradient norm if using gradient clipping. Clipping with norm .3 ~ 1.0 can
-        help optimization for larger ViT architectures. 0 for disabling.""",
-    )
-    parser.add_argument(
-        "--batch_size_per_gpu",
-        type=int,
-        default=64,
-        help="Per-GPU batch-size : number of distinct images loaded on one GPU.",
-    )
-    parser.add_argument(
-        "--epochs", type=int, default=100, help="Number of epochs of training."
-    )
-    parser.add_argument(
-        "--warmup_epochs",
-        default=10,
-        type=int,
-        help="""Number of epochs for the linear learning-rate warm up.=""",
-    )
-    parser.add_argument(
-        "--freeze_last_layer",
-        type=int,
-        default=1,
-        help="""Number of epochs during
-        which we keep the output layer fixed for the group supervision loss. Typically doing so during
-        the first epoch helps training. Try increasing this value if the loss does not decrease.""",
-    )
-    parser.add_argument(
-        "--lr",
-        type=float,
-        default=0.0008,
-        help="""Learning rate at the end of
-        linear warmup (highest LR used during training). The learning rate is linearly scaled
-        with the batch size, and specified here for a reference batch size of 256.""",
-    )
-    parser.add_argument(
-        "--patch_embed_lr_mult",
-        type=float,
-        default=0.2,
-        help="""For patch
-        embedding layer, its learning rate is lr * patch_embed_lr_mult (<1.0) in most case, which
-        stables training and also slightly improve the performance.""",
-    )
-    parser.add_argument(
-        "--min_lr",
-        type=float,
-        default=1e-6,
-        help="""Target LR at the
-        end of optimization. We use a cosine LR schedule with linear warmup.""",
-    )
-    parser.add_argument(
-        "--optimizer",
-        type=str,
-        default="adamw",
-        choices=["adamw", "sgd", "lars"],
-        help="""Type of optimizer. We recommend using adamw
-        with ViTs.""",
-    )
-    parser.add_argument(
-        "--drop_path_rate", type=float, default=0.1, help="""stochastic depth rate"""
-    )
+    parser.add_argument("--weight_decay", type=float, default=0.0, help="""Initial value of the weight decay.""")
+    parser.add_argument("--weight_decay_end", type=float, default=0.0, help="""Final value of the weight decay.""")
+    parser.add_argument("--clip_grad", type=float, default=3.0, help="""Maximal parameter gradient norm if using gradient clipping. 0 for disabling.""")
+    parser.add_argument("--batch_size_per_gpu", type=int, default=42, help="Per-GPU batch-size : number of distinct images loaded on one GPU.")
+    parser.add_argument("--epochs", type=int, default=100, help="Number of epochs of training.")
+    parser.add_argument("--warmup_epochs", default=0, type=int, help="""Number of epochs for the linear learning-rate warm up.""")
+    parser.add_argument("--freeze_last_layer", type=int, default=0, help="""Number of epochs during which we keep the output layer fixed for the group supervision loss.""")
+    parser.add_argument("--lr", type=float, default=0.0005, help="""Learning rate at the end of linear warmup (highest LR used during training).""")
+    parser.add_argument("--patch_embed_lr_mult", type=float, default=1.0, help="""For patch embedding layer, its learning rate is lr * patch_embed_lr_mult (<1.0).""")
+    parser.add_argument("--min_lr", type=float, default=0.0005, help="""Target LR at the end of optimization. We use a cosine LR schedule with linear warmup.""")
+    parser.add_argument("--optimizer", type=str, default="adamw", choices=["adamw", "sgd", "lars"], help="""Type of optimizer. We recommend using adamw with ViTs.""")
+    parser.add_argument("--drop_path_rate", type=float, default=0.1, help="""stochastic depth rate""")
 
     ##========  Multi-granular supervisions (instance/local-group/group supervisions) ==========
     parser.add_argument(
@@ -315,121 +231,30 @@ def get_args_parser():
         help="""Scale range of the cropped image before resizing, relatively to the origin image.
         Used for small local view cropping of multi-crop.""",
     )
-    # strong augmentation parameters
-    parser.add_argument(
-        "--timm_auto_augment_par",
-        type=str,
-        default="rand-m9-mstd0.5-inc1",
-        help="""the parameters for the AutoAugment used in DeiT.""",
-    )
-    parser.add_argument(
-        "--color_aug",
-        type=utils.bool_flag,
-        default=False,
-        help="""after AutoAugment, whether we further perform color augmentation. (Default: False).""",
-    )
-    parser.add_argument(
-        "--size_crops",
-        type=int,
-        default=[96],
-        nargs="+",
-        help="""the small crop size. Note we use multi-crop strategy, namely two 224-sized crops +
-        ten 96-sized crops. (Default: 96)""",
-    )
-    parser.add_argument(
-        "--strong_ratio",
-        type=float,
-        default=0.45,
-        help="""the ratio of image augmentation for the AutoAugment used in DeiT.""",
-    )
-    parser.add_argument(
-        "--re_prob",
-        type=float,
-        default=0.25,
-        help="""the re-prob parameter of image augmentation for the AutoAugment used in DeiT.""",
-    )
-    parser.add_argument(
-        "--vanilla_weak_augmentation",
-        type=utils.bool_flag,
-        default=False,
-        help="""Whether we use the same augmentation in DINO, namely only using weak augmentation.""",
-    )
-    parser.add_argument(
-        "--prob",
-        type=float,
-        default=0.5,
-        help="""When we use strong augmentation and weak augmentation, the ratio of images to
-        be cropped with strong augmentation.""",
-    )
+    ## ======== strong augmentation parameters ========
+    parser.add_argument("--timm_auto_augment_par", type=str, default="rand-m9-mstd0.5-inc1", help="""the parameters for the AutoAugment used in DeiT.""")
+    parser.add_argument("--color_aug", type=utils.bool_flag, default=False, help="""after AutoAugment, whether we further perform color augmentation. (Default: False).""")
+    parser.add_argument("--size_crops", type=int, default=[96], nargs="+", help="""the small crop size. Note we use multi-crop strategy, namely two 224-sized crops + ten 96-sized crops.""")
+    parser.add_argument("--strong_ratio", type=float, default=0.45, help="""the ratio of image augmentation for the AutoAugment used in DeiT.""")
+    parser.add_argument("--re_prob", type=float, default=0.25, help="""the re-prob parameter of image augmentation for the AutoAugment used in DeiT.""")
+    parser.add_argument("--vanilla_weak_augmentation", type=utils.bool_flag, default=False, help="""Whether we use the same augmentation in DINO, namely only using weak augmentation.""")
+    parser.add_argument("--prob", type=float, default=0.5, help="""When we use strong augmentation and weak augmentation, the ratio of images to be cropped with strong augmentation.""")
 
-    ##======== Misc ============
-    parser.add_argument(
-        "--data_path",
-        default="/dataset/imageNet100_sicy/train/",
-        type=str,
-        help="""Please specify path to the ImageNet training data.""",
-    )
-    parser.add_argument(
-        "--output_dir",
-        default="./exp/",
-        type=str,
-        help="""Path to save logs and checkpoints.""",
-    )
-    parser.add_argument(
-        "--saveckp_freq",
-        default=50,
-        type=int,
-        help="""Save checkpoint every x epochs.""",
-    )
+    ## ======== Misc ========
+    parser.add_argument("--data_path", default="/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar", type=str, help="""path to data""")
+    parser.add_argument("--output_dir", default="./exp/", type=str, help="""Path to save logs and checkpoints.""")
+    parser.add_argument("--saveckp_freq", default=1, type=int, help="""Save checkpoint every x epochs.""")
     parser.add_argument("--seed", default=0, type=int, help="""Random seed.""")
-    parser.add_argument(
-        "--num_workers",
-        default=12,
-        type=int,
-        help="""Number of data loading workers per GPU.""",
-    )
-    parser.add_argument(
-        "--dist_url",
-        default="env://",
-        type=str,
-        help="""url used to set up
-        distributed training; see https://pytorch.org/docs/stable/distributed.html""",
-    )
-    parser.add_argument(
-        "--local_rank",
-        default=0,
-        type=int,
-        help="""local rank for distrbuted training.""",
-    )
-    parser.add_argument(
-        "--rank", default=0, type=int, help="""rank for distrbuted training."""
-    )
-    parser.add_argument(
-        "--world_size",
-        default=1,
-        type=int,
-        help="""world size for distrbuted training.""",
-    )
-
-    parser.add_argument(
-        "--use_prefetcher",
-        type=utils.bool_flag,
-        default=True,
-        help="""whether we use prefetcher which can accerelate the training speed.""",
-    )
-    parser.add_argument(
-        "--debug",
-        type=utils.bool_flag,
-        default=False,
-        help="""whether we debug. if yes, we only load small fraction of training data to reduce data reading time.""",
-    )
-    parser.add_argument(
-        "--ddpjob",
-        default=False,
-        type=utils.bool_flag,
-        help="""whether we use ddp job. We suggest to use it for distributed training. For single GPUs
-        or Node, you can close it.""",
-    )
+    parser.add_argument("--num_workers", default=4, type=int, help="""Number of data loading workers per GPU.""")
+    parser.add_argument("--dist_url", default="env://", type=str, help="""url used to set up distributed training""")
+    parser.add_argument("--local_rank", default=-1, type=int, help="""local rank for distrbuted training.""")
+    parser.add_argument("--rank", default=0, type=int, help="""rank for distrbuted training.""")
+    parser.add_argument("--world_size", default=1, type=int, help="""world size for distrbuted training.""")
+    parser.add_argument("--use_prefetcher", type=utils.bool_flag, default=True, help="""whether we use prefetcher which can accerelate the training speed.""")
+    parser.add_argument("--debug", type=utils.bool_flag, default=False, help="""If yes, we only load small fraction of data to reduce data reading time.""")
+    parser.add_argument("--ddpjob", default=False, type=utils.bool_flag, help="""whether we use ddp job. We suggest to use it for distributed training.""")
+    parser.add_argument("--simple_optimizer", type=utils.bool_flag, default=True, help="""Turn off learning rate shenanigans""")
+    parser.add_argument("--save_prefix", default="", type=str, help="""prefix for saving checkpoint and log files""")
 
     return parser
 
@@ -438,33 +263,31 @@ def train_mugs(args):
     """
     main training code for Mugs, including building dataloader, models, losses, optimizers, etc
     """
-    ##======== prepare logger for more detailed logs ============
-    logger = utils.get_logger(args.output_dir + "/train.log")
+    ## ======== prepare logger for more detailed logs ============
+    logger = utils.get_logger(args.output_dir + "/" + args.save_prefix + "_train.log")
     logger.info(args)
     if args.output_dir and utils.is_main_process():
-        with (Path(args.output_dir) / "log.txt").open("a") as f:
+        with (Path(args.output_dir) / args.save_prefix + "_log.txt").open("a") as f:
             f.write(str(args) + "\n")
 
-    ##======== initilize distribution ============
+    ## ======== initilize distribution ============
     if args.ddpjob is True:
         utils.init_distributed_ddpjob(args)
     else:
         utils.init_distributed_mode(args)
 
-    ##======== fix seed for reproduce ============
+    ## ======== fix seed for reproduce ============
     utils.fix_random_seeds(args.seed)
     print("git:\n  {}\n".format(utils.get_sha()))
-    print(
-        "\n".join("%s: %s" % (k, str(v)) for k, v in sorted(dict(vars(args)).items()))
-    )
+    print("\n".join("%s: %s" % (k, str(v)) for k, v in sorted(dict(vars(args)).items())))
     cudnn.benchmark = True
     cudnn.deterministic = True
 
-    ##======== get the training dataset/loader ============
+    ## ======== get the training dataset/loader ============
     data_loader = get_dataset(args)
-    logger.info(f"Data loaded: there are {len(data_loader.dataset)} images.")
+    # logger.info(f"Data loaded: there are {len(data_loader.dataset)} images.")
 
-    ##====== build  student and teacher networks (vit_small, vit_base, vit_large) =========
+    ## ====== build  student and teacher networks (vit_small, vit_base, vit_large) =========
     student, teacher, student_mem, teacher_mem = get_model(args)
 
     # move networks to gpu
@@ -481,6 +304,7 @@ def train_mugs(args):
     else:
         # teacher_without_ddp and teacher are the same thing
         teacher_without_ddp = teacher
+        
     student = nn.parallel.DistributedDataParallel(student, device_ids=[args.gpu])
     # teacher and student start with the same weights
     teacher_without_ddp.load_state_dict(student.module.state_dict(), strict=False)
@@ -494,14 +318,19 @@ def train_mugs(args):
     all_losses, all_weights = get_multi_granular_loss(args)
 
     ##======== preparing optimizer ============
-    optimizer, fp16_scaler, lr_schedule, wd_schedule, momentum_schedule = get_optimizer(
-        student, len(data_loader), args
-    )
+    num_data = 1000000  # this is arbitrary
+    num_iters_per_epoch = num_data // (args.batch_size_per_gpu * args.world_size)
+    optimizer, fp16_scaler, lr_schedule, wd_schedule, momentum_schedule = get_optimizer(student, num_iters_per_epoch, args)
+
+    for _, param_group in enumerate(optimizer.param_groups):
+        param_group["lr"] = args.lr
+        if param_group.get("apply_wd", True):  # only the first group is regularized
+            param_group["weight_decay"] = args.weight_decay
 
     ##======== optionally resume training ============
     to_restore = {"epoch": 0}
     utils.restart_from_checkpoint(
-        os.path.join(args.output_dir, "checkpoint.pth"),
+        os.path.join(args.output_dir, args.save_prefix + "_checkpoint.pth"),
         run_variables=to_restore,
         student=student,
         teacher=teacher,
@@ -513,14 +342,14 @@ def train_mugs(args):
     )
     start_epoch = to_restore["epoch"]
 
-    ##======== Starting Mugs training ============
+    ## ======== Starting Mugs training ============
     logger.info("Starting Mugs training !")
     start_time = time.time()
     for epoch in range(start_epoch, args.epochs):
         t1 = time.time()
-        data_loader.sampler.set_epoch(epoch)
+        # data_loader.sampler.set_epoch(epoch)
 
-        ##======== training one epoch of Mugs ============
+        ## ======== training one epoch of Mugs ============
         train_stats = train_one_epoch(
             student,
             teacher,
@@ -537,19 +366,16 @@ def train_mugs(args):
             student_mem,
             teacher_mem,
             logger,
+            num_data,
             args,
         )
 
-        ##======== save model checkpoint ============
+        ## ======== save model checkpoint ============
         save_dict = {
             "student": student.state_dict(),
             "teacher": teacher.state_dict(),
-            "student_mem": student_mem.state_dict()
-            if student_mem is not None
-            else None,
-            "teacher_mem": teacher_mem.state_dict()
-            if teacher_mem is not None
-            else None,
+            "student_mem": student_mem.state_dict() if student_mem is not None else None,
+            "teacher_mem": teacher_mem.state_dict() if teacher_mem is not None else None,
             "optimizer": optimizer.state_dict(),
             "epoch": epoch + 1,
             "args": args,
@@ -562,26 +388,21 @@ def train_mugs(args):
         if fp16_scaler is not None:
             save_dict["fp16_scaler"] = fp16_scaler.state_dict()
 
-        utils.save_on_master(save_dict, os.path.join(args.output_dir, "checkpoint.pth"))
+        utils.save_on_master(save_dict, os.path.join(args.output_dir, args.save_prefix + "_checkpoint.pth"))
         if args.saveckp_freq and epoch % args.saveckp_freq == 0:
-            utils.save_on_master(
-                save_dict, os.path.join(args.output_dir, f"checkpoint{epoch:04}.pth")
-            )
+            utils.save_on_master(save_dict, os.path.join(args.output_dir, args.save_prefix + f"checkpoint{epoch:04}.pth"))
 
-        ##======== writing logs ============
+        ## ======== writing logs ============
         log_stats = {**{f"{k}": v for k, v in train_stats.items()}, "epoch": epoch}
         if utils.is_main_process():
-            with (Path(args.output_dir) / "log.txt").open("a") as f:
+            with (Path(args.output_dir) / args.save_prefix + "_log.txt").open("a") as f:
                 f.write(json.dumps(log_stats) + "\n")
 
             t2 = time.time()
             log_results = ""
             for k, v in train_stats.items():
                 log_results += "%s: %.6f, " % (k, v)
-            logger.info(
-                "%d-epoch: %s remaining time %.2f hours"
-                % (epoch, log_results, (t2 - t1) * (args.epochs - epoch) / 3600.0)
-            )
+            logger.info("%d-epoch: %s remaining time %.2f hours" % (epoch, log_results, (t2 - t1) * (args.epochs - epoch) / 3600.0))
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
@@ -604,6 +425,7 @@ def train_one_epoch(
     student_mem,
     teacher_mem,
     logger,
+    num_data,
     args,
 ):
     """
@@ -613,16 +435,19 @@ def train_one_epoch(
     prefetcher = data_prefetcher(data_loader, fp16=(fp16_scaler is not None))
     images, weak_aug_flags = prefetcher.next()
     epoch_it = 0
-    while images is not None:
+    while epoch_it < num_data // (args.batch_size_per_gpu * args.world_size):
         #  Step 1. update weight decay and learning rate according to their schedule
-        it = len(data_loader) * epoch + epoch_it  # global training iteration
-        for _, param_group in enumerate(optimizer.param_groups):
-            lr_mult = 1.0
-            if "patch_embed" in param_group["name"]:
-                lr_mult = args.patch_embed_lr_mult
-            param_group["lr"] = lr_schedule[it] * lr_mult
-            if param_group.get("apply_wd", True):  # only the first group is regularized
-                param_group["weight_decay"] = wd_schedule[it]
+        it = epoch * num_data // (args.batch_size_per_gpu * args.world_size) + epoch_it  # global training iteration
+
+        if not args.simple_optimizer:
+            # skip the following if simple_optimizer set to True
+            for _, param_group in enumerate(optimizer.param_groups):
+                lr_mult = 1.0
+                if "patch_embed" in param_group["name"]:
+                    lr_mult = args.patch_embed_lr_mult
+                param_group["lr"] = lr_schedule[it] * lr_mult
+                if param_group.get("apply_wd", True):  # only the first group is regularized
+                    param_group["weight_decay"] = wd_schedule[it]
 
         granular_losses = OrderedDict()
         total_loss = 0
@@ -650,7 +475,7 @@ def train_one_epoch(
                 return_target=False,
                 local_group_memory_inputs={"mem": student_mem},
             )
-
+            
             ## Step 3. compute the three granular supervision losses, including instance,
             # local-group, group supervision losses
             weigts_sum, total_loss, granular_losses = 0.0, 0.0, OrderedDict()
@@ -700,10 +525,7 @@ def train_one_epoch(
             ## ## Step 4. update the memory buffer for local-group supervision losses.
             # for student, we only update memory by the image of size 224 and weak augmentations
             student_features = (student_memory_tokens.chunk(2))[0]
-            len_weak = student_mem._dequeue_and_enqueue(
-                student_features, 
-                weak_aug_flags, 
-            )
+            len_weak = student_mem._dequeue_and_enqueue(student_features, weak_aug_flags)
 
             teacher_weak = (teacher_memory_tokens.chunk(2))[0]
             _ = teacher_mem._dequeue_and_enqueue(teacher_weak, None)
@@ -782,16 +604,12 @@ def train_one_epoch(
             log_results = ""
             for _, loss_name in enumerate(all_losses):
                 if all_weights[loss_name] > 0:
-                    log_results += "%s: %.6f," % (
-                        loss_name,
-                        metric_logger.meters[loss_name].global_avg,
-                    )
-            logger.info(
-                "%d-epoch (%d/%d): total loss %.6f, %s, lr %.4e, wd %.4e, weak aug. ratio %.1f"
+                    log_results += " %s: %.6f," % (loss_name, metric_logger.meters[loss_name].global_avg)
+            logger.info("%d-epoch (%d/%d): total loss %.6f, %s lr: %.4e, wd: %.4e, weak aug. ratio: %.1f"
                 % (
                     epoch,
-                    it,
-                    len(data_loader),
+                    epoch_it,
+                    num_data // (args.batch_size_per_gpu * args.world_size),
                     metric_logger.meters["loss"].global_avg,
                     log_results,
                     optimizer.param_groups[0]["lr"],

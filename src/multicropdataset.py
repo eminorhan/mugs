@@ -14,10 +14,12 @@
 """
 multi-crop dataset to implement multi-crop augmentation and also dataset
 """
+from audioop import mul
 import copy
 import random
 
 import torch
+import webdataset as wds
 import torchvision.transforms as transforms
 from PIL import Image, ImageFilter, ImageOps
 from src.dataset import ImageFolder
@@ -230,9 +232,7 @@ class DataAugmentation(object):
         # first global crop, always weak augmentation
         self.global_transfo1 = transforms.Compose(
             [
-                transforms.RandomResizedCrop(
-                    224, scale=global_crops_scale, interpolation=Image.BICUBIC
-                ),
+                transforms.RandomResizedCrop(224, scale=global_crops_scale, interpolation=Image.BICUBIC),
                 flip_and_color_jitter,
                 GaussianBlur(1.0),
                 normalize,
@@ -242,9 +242,7 @@ class DataAugmentation(object):
         # second global crop, always weak augmentation
         self.global_transfo2 = transforms.Compose(
             [
-                transforms.RandomResizedCrop(
-                    224, scale=global_crops_scale, interpolation=Image.BICUBIC
-                ),
+                transforms.RandomResizedCrop(224, scale=global_crops_scale, interpolation=Image.BICUBIC),
                 flip_and_color_jitter,
                 GaussianBlur(0.1),
                 Solarization(0.2),
@@ -321,6 +319,7 @@ class DataAugmentation(object):
         ##====== images to be fed into teacher, two 224-sized =========
         img1 = self.global_transfo1(image)
         img2 = self.global_transfo2(image)
+
         crops.append(img1)
         crops.append(img2)
 
@@ -377,22 +376,23 @@ def get_dataset(args):
         use_prefetcher=args.use_prefetcher,
     )
 
-    ## For debug mode, we only load the first two classes to reduce data reading time.
-    ## otherwise, we load all training data for pretraining.
-    class_num = 2 if args.debug else 1000
-    dataset = ImageFolder(args.data_path, transform=transform, class_num=class_num)
-
-    sampler = torch.utils.data.DistributedSampler(dataset, shuffle=True)
-    data_loader = torch.utils.data.DataLoader(
-        dataset,
-        sampler=sampler,
-        batch_size=args.batch_size_per_gpu,
-        num_workers=args.num_workers,
-        pin_memory=True,
-        drop_last=True,
+    # For debug mode, we only load the first two classes to reduce data reading time.
+    # otherwise, we load all training data for pretraining.
+    def preprocess(sample):
+        return sample[0]
+        
+    dataset = (
+        wds.WebDataset(args.data_path, resampled=True)
+        .shuffle(1000)
+        .decode("pil")
+        .to_tuple("jpg")
+        .map(preprocess)
+        .map(transform)
     )
-    return data_loader
 
+    loader = wds.WebLoader(dataset, shuffle=False, batch_size=args.batch_size_per_gpu, num_workers=args.num_workers)
+
+    return loader
 
 class data_prefetcher:
     """
