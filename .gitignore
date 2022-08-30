@@ -1,0 +1,8 @@
+# File extensions
+*.pt
+*.pth
+*.tar
+*.out
+
+# Directories
+/__pycache__
