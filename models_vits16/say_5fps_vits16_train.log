@@ -248,3 +248,208 @@ INFO:28-epoch (1500/3906): total loss 5.200829,  instance-sup.: 6.838648, local-
 INFO:28-epoch (2000/3906): total loss 5.204631,  instance-sup.: 6.841752, local-group-sup.: 6.821112, group-sup.: 1.951028, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
 INFO:28-epoch (2500/3906): total loss 5.204938,  instance-sup.: 6.842377, local-group-sup.: 6.820883, group-sup.: 1.951554, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
 INFO:28-epoch (3000/3906): total loss 5.204887,  instance-sup.: 6.842420, local-group-sup.: 6.820578, group-sup.: 1.951661, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:Namespace(arch='vit_small', patch_size=16, momentum_teacher=0.996, use_fp16=False, weight_decay=0.0, weight_decay_end=0.0, clip_grad=3.0, batch_size_per_gpu=64, epochs=100, warmup_epochs=0, freeze_last_layer=0, lr=0.0005, patch_embed_lr_mult=1.0, min_lr=0.0005, optimizer='adamw', drop_path_rate=0.1, loss_weights=[1.0, 1.0, 1.0], use_bn_in_head=False, norm_before_pred=True, instance_out_dim=256, instance_queue_size=65536, instance_temp=0.2, local_group_out_dim=256, local_group_knn_top_n=8, local_group_queue_size=65536, local_group_temp=0.2, group_out_dim=65536, group_bottleneck_dim=256, norm_last_layer=True, group_student_temp=0.1, group_warmup_teacher_temp=0.04, group_teacher_temp=0.04, group_warmup_teacher_temp_epochs=0, global_crops_scale=(0.25, 1.0), local_crops_number=10, local_crops_scale=(0.05, 0.25), timm_auto_augment_par='rand-m9-mstd0.5-inc1', color_aug=False, size_crops=[96], strong_ratio=0.45, re_prob=0.25, vanilla_weak_augmentation=False, prob=0.5, data_path='/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar', output_dir='/scratch/eo41/mugs/models_vits16', saveckp_freq=1, seed=0, num_workers=8, dist_url='env://', local_rank=-1, rank=0, world_size=1, use_prefetcher=True, debug=False, ddpjob=False, simple_optimizer=True, save_prefix='say_5fps_vits16')
+INFO:Namespace(arch='vit_small', patch_size=16, momentum_teacher=0.996, use_fp16=False, weight_decay=0.0, weight_decay_end=0.0, clip_grad=3.0, batch_size_per_gpu=64, epochs=100, warmup_epochs=0, freeze_last_layer=0, lr=0.0005, patch_embed_lr_mult=1.0, min_lr=0.0005, optimizer='adamw', drop_path_rate=0.1, loss_weights=[1.0, 1.0, 1.0], use_bn_in_head=False, norm_before_pred=True, instance_out_dim=256, instance_queue_size=65536, instance_temp=0.2, local_group_out_dim=256, local_group_knn_top_n=8, local_group_queue_size=65536, local_group_temp=0.2, group_out_dim=65536, group_bottleneck_dim=256, norm_last_layer=True, group_student_temp=0.1, group_warmup_teacher_temp=0.04, group_teacher_temp=0.04, group_warmup_teacher_temp_epochs=0, global_crops_scale=(0.25, 1.0), local_crops_number=10, local_crops_scale=(0.05, 0.25), timm_auto_augment_par='rand-m9-mstd0.5-inc1', color_aug=False, size_crops=[96], strong_ratio=0.45, re_prob=0.25, vanilla_weak_augmentation=False, prob=0.5, data_path='/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar', output_dir='/scratch/eo41/mugs/models_vits16', saveckp_freq=1, seed=0, num_workers=8, dist_url='env://', local_rank=-1, rank=0, world_size=1, use_prefetcher=True, debug=False, ddpjob=False, simple_optimizer=True, save_prefix='say_5fps_vits16')
+INFO:Namespace(arch='vit_small', patch_size=16, momentum_teacher=0.996, use_fp16=False, weight_decay=0.0, weight_decay_end=0.0, clip_grad=3.0, batch_size_per_gpu=64, epochs=100, warmup_epochs=0, freeze_last_layer=0, lr=0.0005, patch_embed_lr_mult=1.0, min_lr=0.0005, optimizer='adamw', drop_path_rate=0.1, loss_weights=[1.0, 1.0, 1.0], use_bn_in_head=False, norm_before_pred=True, instance_out_dim=256, instance_queue_size=65536, instance_temp=0.2, local_group_out_dim=256, local_group_knn_top_n=8, local_group_queue_size=65536, local_group_temp=0.2, group_out_dim=65536, group_bottleneck_dim=256, norm_last_layer=True, group_student_temp=0.1, group_warmup_teacher_temp=0.04, group_teacher_temp=0.04, group_warmup_teacher_temp_epochs=0, global_crops_scale=(0.25, 1.0), local_crops_number=10, local_crops_scale=(0.05, 0.25), timm_auto_augment_par='rand-m9-mstd0.5-inc1', color_aug=False, size_crops=[96], strong_ratio=0.45, re_prob=0.25, vanilla_weak_augmentation=False, prob=0.5, data_path='/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar', output_dir='/scratch/eo41/mugs/models_vits16', saveckp_freq=1, seed=0, num_workers=8, dist_url='env://', local_rank=-1, rank=0, world_size=1, use_prefetcher=True, debug=False, ddpjob=False, simple_optimizer=True, save_prefix='say_5fps_vits16')
+INFO:Namespace(arch='vit_small', patch_size=16, momentum_teacher=0.996, use_fp16=False, weight_decay=0.0, weight_decay_end=0.0, clip_grad=3.0, batch_size_per_gpu=64, epochs=100, warmup_epochs=0, freeze_last_layer=0, lr=0.0005, patch_embed_lr_mult=1.0, min_lr=0.0005, optimizer='adamw', drop_path_rate=0.1, loss_weights=[1.0, 1.0, 1.0], use_bn_in_head=False, norm_before_pred=True, instance_out_dim=256, instance_queue_size=65536, instance_temp=0.2, local_group_out_dim=256, local_group_knn_top_n=8, local_group_queue_size=65536, local_group_temp=0.2, group_out_dim=65536, group_bottleneck_dim=256, norm_last_layer=True, group_student_temp=0.1, group_warmup_teacher_temp=0.04, group_teacher_temp=0.04, group_warmup_teacher_temp_epochs=0, global_crops_scale=(0.25, 1.0), local_crops_number=10, local_crops_scale=(0.05, 0.25), timm_auto_augment_par='rand-m9-mstd0.5-inc1', color_aug=False, size_crops=[96], strong_ratio=0.45, re_prob=0.25, vanilla_weak_augmentation=False, prob=0.5, data_path='/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar', output_dir='/scratch/eo41/mugs/models_vits16', saveckp_freq=1, seed=0, num_workers=8, dist_url='env://', local_rank=-1, rank=0, world_size=1, use_prefetcher=True, debug=False, ddpjob=False, simple_optimizer=True, save_prefix='say_5fps_vits16')
+INFO:Added key: store_based_barrier_key:1 to store for rank: 1
+INFO:Added key: store_based_barrier_key:1 to store for rank: 3
+INFO:Added key: store_based_barrier_key:1 to store for rank: 2
+INFO:Added key: store_based_barrier_key:1 to store for rank: 0
+INFO:Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 4 nodes.
+INFO:Rank 2: Completed store-based barrier for key:store_based_barrier_key:1 with 4 nodes.
+INFO:Rank 1: Completed store-based barrier for key:store_based_barrier_key:1 with 4 nodes.
+INFO:Rank 3: Completed store-based barrier for key:store_based_barrier_key:1 with 4 nodes.
+INFO:Starting Mugs training !
+INFO:Starting Mugs training !
+INFO:Starting Mugs training !
+INFO:Starting Mugs training !
+INFO:Reducer buckets have been rebuilt in this iteration.
+INFO:Reducer buckets have been rebuilt in this iteration.
+INFO:Reducer buckets have been rebuilt in this iteration.
+INFO:Reducer buckets have been rebuilt in this iteration.
+INFO:28-epoch (500/3906): total loss 5.183918,  instance-sup.: 6.827569, local-group-sup.: 6.810846, group-sup.: 1.913340, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:28-epoch (1000/3906): total loss 5.182924,  instance-sup.: 6.827860, local-group-sup.: 6.809690, group-sup.: 1.911221, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:28-epoch (1500/3906): total loss 5.185976,  instance-sup.: 6.829602, local-group-sup.: 6.810860, group-sup.: 1.917466, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:28-epoch (2000/3906): total loss 5.189549,  instance-sup.: 6.831968, local-group-sup.: 6.813112, group-sup.: 1.923566, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:28-epoch (2500/3906): total loss 5.191698,  instance-sup.: 6.833539, local-group-sup.: 6.814911, group-sup.: 1.926643, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:28-epoch (3000/3906): total loss 5.191385,  instance-sup.: 6.833205, local-group-sup.: 6.814697, group-sup.: 1.926251, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:28-epoch (3500/3906): total loss 5.192031,  instance-sup.: 6.833369, local-group-sup.: 6.815512, group-sup.: 1.927210, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:28-epoch: loss: 5.197339, instance-sup.: 6.837349, local-group-sup.: 6.813422, group-sup.: 1.941244, lr: 0.000500, wd: 0.000000,  remaining time 50.12 hours
+INFO:29-epoch (500/3906): total loss 5.144751,  instance-sup.: 6.806280, local-group-sup.: 6.769729, group-sup.: 1.858243, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:29-epoch (1000/3906): total loss 5.142772,  instance-sup.: 6.806914, local-group-sup.: 6.767126, group-sup.: 1.854276, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:29-epoch (1500/3906): total loss 5.145667,  instance-sup.: 6.809300, local-group-sup.: 6.768455, group-sup.: 1.859245, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:29-epoch (2000/3906): total loss 5.148151,  instance-sup.: 6.811300, local-group-sup.: 6.770423, group-sup.: 1.862731, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:29-epoch (2500/3906): total loss 5.150819,  instance-sup.: 6.812843, local-group-sup.: 6.771729, group-sup.: 1.867884, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:29-epoch (3000/3906): total loss 5.151957,  instance-sup.: 6.813641, local-group-sup.: 6.772555, group-sup.: 1.869674, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:29-epoch (3500/3906): total loss 5.152898,  instance-sup.: 6.813945, local-group-sup.: 6.773500, group-sup.: 1.871248, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:29-epoch: loss: 5.175676, instance-sup.: 6.826781, local-group-sup.: 6.792122, group-sup.: 1.908125, lr: 0.000500, wd: 0.000000,  remaining time 49.35 hours
+INFO:30-epoch (500/3906): total loss 5.160972,  instance-sup.: 6.814890, local-group-sup.: 6.782507, group-sup.: 1.885518, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:30-epoch (1000/3906): total loss 5.155952,  instance-sup.: 6.812356, local-group-sup.: 6.778986, group-sup.: 1.876513, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:30-epoch (1500/3906): total loss 5.156823,  instance-sup.: 6.813171, local-group-sup.: 6.779743, group-sup.: 1.877555, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:30-epoch (2000/3906): total loss 5.161075,  instance-sup.: 6.816765, local-group-sup.: 6.782340, group-sup.: 1.884119, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:30-epoch (2500/3906): total loss 5.161182,  instance-sup.: 6.817112, local-group-sup.: 6.782237, group-sup.: 1.884195, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:30-epoch (3000/3906): total loss 5.161971,  instance-sup.: 6.817846, local-group-sup.: 6.782670, group-sup.: 1.885397, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:30-epoch (3500/3906): total loss 5.164738,  instance-sup.: 6.819352, local-group-sup.: 6.785025, group-sup.: 1.889837, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:30-epoch: loss: 5.162762, instance-sup.: 6.818154, local-group-sup.: 6.785374, group-sup.: 1.884757, lr: 0.000500, wd: 0.000000,  remaining time 48.66 hours
+INFO:31-epoch (500/3906): total loss 5.143820,  instance-sup.: 6.807344, local-group-sup.: 6.767790, group-sup.: 1.856325, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:31-epoch (1000/3906): total loss 5.140427,  instance-sup.: 6.806063, local-group-sup.: 6.765775, group-sup.: 1.849441, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:31-epoch (1500/3906): total loss 5.147000,  instance-sup.: 6.809434, local-group-sup.: 6.769845, group-sup.: 1.861719, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:31-epoch (2000/3906): total loss 5.150441,  instance-sup.: 6.812484, local-group-sup.: 6.771966, group-sup.: 1.866872, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:31-epoch (2500/3906): total loss 5.149918,  instance-sup.: 6.812451, local-group-sup.: 6.771793, group-sup.: 1.865508, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:31-epoch (3000/3906): total loss 5.150854,  instance-sup.: 6.813145, local-group-sup.: 6.772882, group-sup.: 1.866534, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:31-epoch (3500/3906): total loss 5.155261,  instance-sup.: 6.815618, local-group-sup.: 6.777999, group-sup.: 1.872164, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:31-epoch: loss: 5.151673, instance-sup.: 6.812325, local-group-sup.: 6.778858, group-sup.: 1.863835, lr: 0.000500, wd: 0.000000,  remaining time 48.00 hours
+INFO:32-epoch (500/3906): total loss 5.131204,  instance-sup.: 6.796100, local-group-sup.: 6.770112, group-sup.: 1.827398, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:32-epoch (1000/3906): total loss 5.130456,  instance-sup.: 6.797780, local-group-sup.: 6.767922, group-sup.: 1.825665, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:32-epoch (1500/3906): total loss 5.136974,  instance-sup.: 6.802311, local-group-sup.: 6.772174, group-sup.: 1.836437, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:32-epoch (2000/3906): total loss 5.143457,  instance-sup.: 6.806625, local-group-sup.: 6.776190, group-sup.: 1.847556, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:32-epoch (2500/3906): total loss 5.144854,  instance-sup.: 6.807346, local-group-sup.: 6.776587, group-sup.: 1.850628, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:32-epoch (3000/3906): total loss 5.147034,  instance-sup.: 6.808696, local-group-sup.: 6.777885, group-sup.: 1.854520, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:32-epoch (3500/3906): total loss 5.147158,  instance-sup.: 6.808713, local-group-sup.: 6.777682, group-sup.: 1.855078, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:32-epoch: loss: 5.155906, instance-sup.: 6.814265, local-group-sup.: 6.781399, group-sup.: 1.872053, lr: 0.000500, wd: 0.000000,  remaining time 47.27 hours
+INFO:33-epoch (500/3906): total loss 5.143846,  instance-sup.: 6.804468, local-group-sup.: 6.782432, group-sup.: 1.844639, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:33-epoch (1000/3906): total loss 5.141907,  instance-sup.: 6.804150, local-group-sup.: 6.780602, group-sup.: 1.840970, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:33-epoch (1500/3906): total loss 5.146234,  instance-sup.: 6.806786, local-group-sup.: 6.783333, group-sup.: 1.848583, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:33-epoch (2000/3906): total loss 5.147927,  instance-sup.: 6.808357, local-group-sup.: 6.784047, group-sup.: 1.851377, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:33-epoch (2500/3906): total loss 5.149661,  instance-sup.: 6.809607, local-group-sup.: 6.784817, group-sup.: 1.854559, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:33-epoch (3000/3906): total loss 5.149412,  instance-sup.: 6.809291, local-group-sup.: 6.784421, group-sup.: 1.854523, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:33-epoch (3500/3906): total loss 5.149984,  instance-sup.: 6.809417, local-group-sup.: 6.785126, group-sup.: 1.855409, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:33-epoch: loss: 5.138413, instance-sup.: 6.803886, local-group-sup.: 6.769966, group-sup.: 1.841386, lr: 0.000500, wd: 0.000000,  remaining time 46.60 hours
+INFO:34-epoch (500/3906): total loss 5.128639,  instance-sup.: 6.796856, local-group-sup.: 6.766243, group-sup.: 1.822816, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:34-epoch (1000/3906): total loss 5.126947,  instance-sup.: 6.795827, local-group-sup.: 6.764529, group-sup.: 1.820484, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:34-epoch (1500/3906): total loss 5.131178,  instance-sup.: 6.799437, local-group-sup.: 6.767135, group-sup.: 1.826963, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:34-epoch (2000/3906): total loss 5.134370,  instance-sup.: 6.801683, local-group-sup.: 6.769398, group-sup.: 1.832029, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:34-epoch (2500/3906): total loss 5.135637,  instance-sup.: 6.802890, local-group-sup.: 6.769997, group-sup.: 1.834023, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:34-epoch (3000/3906): total loss 5.135873,  instance-sup.: 6.803088, local-group-sup.: 6.769970, group-sup.: 1.834560, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:34-epoch (3500/3906): total loss 5.136089,  instance-sup.: 6.803226, local-group-sup.: 6.770113, group-sup.: 1.834928, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:34-epoch: loss: 5.134497, instance-sup.: 6.801850, local-group-sup.: 6.768885, group-sup.: 1.832757, lr: 0.000500, wd: 0.000000,  remaining time 45.88 hours
+INFO:35-epoch (500/3906): total loss 5.119819,  instance-sup.: 6.791365, local-group-sup.: 6.761660, group-sup.: 1.806431, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:35-epoch (1000/3906): total loss 5.114655,  instance-sup.: 6.788807, local-group-sup.: 6.757800, group-sup.: 1.797358, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:35-epoch (1500/3906): total loss 5.118252,  instance-sup.: 6.790962, local-group-sup.: 6.759630, group-sup.: 1.804164, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:35-epoch (2000/3906): total loss 5.121583,  instance-sup.: 6.793496, local-group-sup.: 6.761040, group-sup.: 1.810212, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:35-epoch (2500/3906): total loss 5.122379,  instance-sup.: 6.794199, local-group-sup.: 6.761651, group-sup.: 1.811288, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:35-epoch (3000/3906): total loss 5.123532,  instance-sup.: 6.795111, local-group-sup.: 6.762083, group-sup.: 1.813401, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:35-epoch (3500/3906): total loss 5.122940,  instance-sup.: 6.794519, local-group-sup.: 6.761626, group-sup.: 1.812673, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:35-epoch: loss: 5.130275, instance-sup.: 6.798603, local-group-sup.: 6.767765, group-sup.: 1.824457, lr: 0.000500, wd: 0.000000,  remaining time 45.21 hours
+INFO:36-epoch (500/3906): total loss 5.101837,  instance-sup.: 6.779999, local-group-sup.: 6.743573, group-sup.: 1.781940, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:36-epoch (1000/3906): total loss 5.091307,  instance-sup.: 6.776628, local-group-sup.: 6.737537, group-sup.: 1.759757, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:36-epoch (1500/3906): total loss 5.092862,  instance-sup.: 6.777426, local-group-sup.: 6.739327, group-sup.: 1.761831, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:36-epoch (2000/3906): total loss 5.094658,  instance-sup.: 6.779044, local-group-sup.: 6.740693, group-sup.: 1.764235, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:36-epoch (2500/3906): total loss 5.095179,  instance-sup.: 6.779276, local-group-sup.: 6.740916, group-sup.: 1.765345, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:36-epoch (3000/3906): total loss 5.095539,  instance-sup.: 6.779647, local-group-sup.: 6.741044, group-sup.: 1.765926, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:36-epoch (3500/3906): total loss 5.095160,  instance-sup.: 6.779023, local-group-sup.: 6.740157, group-sup.: 1.766299, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:36-epoch: loss: 5.112889, instance-sup.: 6.789862, local-group-sup.: 6.755765, group-sup.: 1.793040, lr: 0.000500, wd: 0.000000,  remaining time 44.46 hours
+INFO:37-epoch (500/3906): total loss 5.116742,  instance-sup.: 6.789436, local-group-sup.: 6.762589, group-sup.: 1.798200, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:37-epoch (1000/3906): total loss 5.110752,  instance-sup.: 6.786014, local-group-sup.: 6.758859, group-sup.: 1.787382, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.3
+INFO:37-epoch (1500/3906): total loss 5.114151,  instance-sup.: 6.788523, local-group-sup.: 6.760305, group-sup.: 1.793623, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:37-epoch (2000/3906): total loss 5.116451,  instance-sup.: 6.790321, local-group-sup.: 6.762482, group-sup.: 1.796549, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:37-epoch (2500/3906): total loss 5.116520,  instance-sup.: 6.790666, local-group-sup.: 6.762423, group-sup.: 1.796469, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:37-epoch (3000/3906): total loss 5.116298,  instance-sup.: 6.790651, local-group-sup.: 6.761846, group-sup.: 1.796398, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:37-epoch (3500/3906): total loss 5.116835,  instance-sup.: 6.790605, local-group-sup.: 6.763028, group-sup.: 1.796872, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:37-epoch: loss: 5.109834, instance-sup.: 6.787288, local-group-sup.: 6.754348, group-sup.: 1.787865, lr: 0.000500, wd: 0.000000,  remaining time 43.84 hours
+INFO:38-epoch (500/3906): total loss 5.081603,  instance-sup.: 6.770504, local-group-sup.: 6.735447, group-sup.: 1.738859, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:38-epoch (1000/3906): total loss 5.076145,  instance-sup.: 6.767795, local-group-sup.: 6.729869, group-sup.: 1.730771, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:38-epoch (1500/3906): total loss 5.079817,  instance-sup.: 6.769141, local-group-sup.: 6.731166, group-sup.: 1.739144, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:38-epoch (2000/3906): total loss 5.082597,  instance-sup.: 6.771371, local-group-sup.: 6.733346, group-sup.: 1.743075, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:38-epoch (2500/3906): total loss 5.082964,  instance-sup.: 6.771564, local-group-sup.: 6.733621, group-sup.: 1.743705, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:38-epoch (3000/3906): total loss 5.083381,  instance-sup.: 6.772207, local-group-sup.: 6.733824, group-sup.: 1.744112, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:38-epoch (3500/3906): total loss 5.082606,  instance-sup.: 6.771405, local-group-sup.: 6.733152, group-sup.: 1.743260, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:38-epoch: loss: 5.106077, instance-sup.: 6.785446, local-group-sup.: 6.753012, group-sup.: 1.779773, lr: 0.000500, wd: 0.000000,  remaining time 43.13 hours
+INFO:39-epoch (500/3906): total loss 5.069534,  instance-sup.: 6.767520, local-group-sup.: 6.721250, group-sup.: 1.719830, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:39-epoch (1000/3906): total loss 5.064400,  instance-sup.: 6.763724, local-group-sup.: 6.715916, group-sup.: 1.713559, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:39-epoch (1500/3906): total loss 5.069537,  instance-sup.: 6.765944, local-group-sup.: 6.718351, group-sup.: 1.724315, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:39-epoch (2000/3906): total loss 5.072683,  instance-sup.: 6.768660, local-group-sup.: 6.720975, group-sup.: 1.728415, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:39-epoch (2500/3906): total loss 5.073422,  instance-sup.: 6.769135, local-group-sup.: 6.721214, group-sup.: 1.729916, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:39-epoch (3000/3906): total loss 5.072852,  instance-sup.: 6.768309, local-group-sup.: 6.720745, group-sup.: 1.729502, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:39-epoch (3500/3906): total loss 5.072931,  instance-sup.: 6.768116, local-group-sup.: 6.720937, group-sup.: 1.729738, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:39-epoch: loss: 5.099174, instance-sup.: 6.781366, local-group-sup.: 6.751124, group-sup.: 1.765032, lr: 0.000500, wd: 0.000000,  remaining time 42.43 hours
+INFO:40-epoch (500/3906): total loss 5.093351,  instance-sup.: 6.777256, local-group-sup.: 6.743797, group-sup.: 1.759000, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:40-epoch (1000/3906): total loss 5.089266,  instance-sup.: 6.775768, local-group-sup.: 6.742305, group-sup.: 1.749725, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:40-epoch (1500/3906): total loss 5.092774,  instance-sup.: 6.778920, local-group-sup.: 6.744459, group-sup.: 1.754943, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:40-epoch (2000/3906): total loss 5.094193,  instance-sup.: 6.779326, local-group-sup.: 6.745252, group-sup.: 1.757999, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:40-epoch (2500/3906): total loss 5.094426,  instance-sup.: 6.780012, local-group-sup.: 6.745163, group-sup.: 1.758103, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:40-epoch (3000/3906): total loss 5.094429,  instance-sup.: 6.779875, local-group-sup.: 6.745235, group-sup.: 1.758177, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:40-epoch (3500/3906): total loss 5.094540,  instance-sup.: 6.779953, local-group-sup.: 6.745170, group-sup.: 1.758496, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.7
+INFO:40-epoch: loss: 5.093349, instance-sup.: 6.779215, local-group-sup.: 6.743205, group-sup.: 1.757625, lr: 0.000500, wd: 0.000000,  remaining time 41.78 hours
+INFO:41-epoch (500/3906): total loss 5.082833,  instance-sup.: 6.770526, local-group-sup.: 6.740170, group-sup.: 1.737803, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:41-epoch (1000/3906): total loss 5.078672,  instance-sup.: 6.768331, local-group-sup.: 6.736988, group-sup.: 1.730695, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:41-epoch (1500/3906): total loss 5.081276,  instance-sup.: 6.769775, local-group-sup.: 6.738258, group-sup.: 1.735793, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:41-epoch (2000/3906): total loss 5.083423,  instance-sup.: 6.772054, local-group-sup.: 6.740162, group-sup.: 1.738053, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:41-epoch (2500/3906): total loss 5.084286,  instance-sup.: 6.772589, local-group-sup.: 6.740369, group-sup.: 1.739899, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:41-epoch (3000/3906): total loss 5.083597,  instance-sup.: 6.772164, local-group-sup.: 6.739723, group-sup.: 1.738903, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:41-epoch (3500/3906): total loss 5.084914,  instance-sup.: 6.772535, local-group-sup.: 6.741584, group-sup.: 1.740624, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:41-epoch: loss: 5.081129, instance-sup.: 6.770460, local-group-sup.: 6.739158, group-sup.: 1.733770, lr: 0.000500, wd: 0.000000,  remaining time 41.00 hours
+INFO:42-epoch (500/3906): total loss 5.090406,  instance-sup.: 6.772377, local-group-sup.: 6.751508, group-sup.: 1.747331, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:42-epoch (1000/3906): total loss 5.089353,  instance-sup.: 6.774297, local-group-sup.: 6.751056, group-sup.: 1.742705, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:42-epoch (1500/3906): total loss 5.092990,  instance-sup.: 6.777091, local-group-sup.: 6.753655, group-sup.: 1.748224, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:42-epoch (2000/3906): total loss 5.095861,  instance-sup.: 6.780132, local-group-sup.: 6.755333, group-sup.: 1.752119, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:42-epoch (2500/3906): total loss 5.097463,  instance-sup.: 6.780898, local-group-sup.: 6.756114, group-sup.: 1.755375, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:42-epoch (3000/3906): total loss 5.098216,  instance-sup.: 6.781893, local-group-sup.: 6.756816, group-sup.: 1.755938, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:42-epoch (3500/3906): total loss 5.099071,  instance-sup.: 6.782481, local-group-sup.: 6.757520, group-sup.: 1.757210, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:42-epoch: loss: 5.088015, instance-sup.: 6.775965, local-group-sup.: 6.744519, group-sup.: 1.743561, lr: 0.000500, wd: 0.000000,  remaining time 40.46 hours
+INFO:43-epoch (500/3906): total loss 5.066667,  instance-sup.: 6.760664, local-group-sup.: 6.732273, group-sup.: 1.707063, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:43-epoch (1000/3906): total loss 5.064891,  instance-sup.: 6.760678, local-group-sup.: 6.730140, group-sup.: 1.703854, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:43-epoch (1500/3906): total loss 5.069522,  instance-sup.: 6.763174, local-group-sup.: 6.732928, group-sup.: 1.712463, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:43-epoch (2000/3906): total loss 5.073307,  instance-sup.: 6.766512, local-group-sup.: 6.736383, group-sup.: 1.717025, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:43-epoch (2500/3906): total loss 5.074760,  instance-sup.: 6.767731, local-group-sup.: 6.737268, group-sup.: 1.719281, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:43-epoch (3000/3906): total loss 5.074538,  instance-sup.: 6.767217, local-group-sup.: 6.736870, group-sup.: 1.719525, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:43-epoch (3500/3906): total loss 5.075254,  instance-sup.: 6.767508, local-group-sup.: 6.737836, group-sup.: 1.720416, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:43-epoch: loss: 5.076843, instance-sup.: 6.768180, local-group-sup.: 6.738871, group-sup.: 1.723476, lr: 0.000500, wd: 0.000000,  remaining time 39.62 hours
+INFO:44-epoch (500/3906): total loss 5.072614,  instance-sup.: 6.762510, local-group-sup.: 6.740717, group-sup.: 1.714613, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:44-epoch (1000/3906): total loss 5.069317,  instance-sup.: 6.761795, local-group-sup.: 6.739540, group-sup.: 1.706616, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:44-epoch (1500/3906): total loss 5.073829,  instance-sup.: 6.765100, local-group-sup.: 6.743281, group-sup.: 1.713105, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:44-epoch (2000/3906): total loss 5.076206,  instance-sup.: 6.767004, local-group-sup.: 6.744754, group-sup.: 1.716860, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:44-epoch (2500/3906): total loss 5.076877,  instance-sup.: 6.767896, local-group-sup.: 6.744646, group-sup.: 1.718089, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:44-epoch (3000/3906): total loss 5.077192,  instance-sup.: 6.768001, local-group-sup.: 6.744718, group-sup.: 1.718856, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:44-epoch (3500/3906): total loss 5.077134,  instance-sup.: 6.768423, local-group-sup.: 6.744684, group-sup.: 1.718295, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:44-epoch: loss: 5.069962, instance-sup.: 6.764644, local-group-sup.: 6.733925, group-sup.: 1.711317, lr: 0.000500, wd: 0.000000,  remaining time 38.97 hours
+INFO:45-epoch (500/3906): total loss 5.052026,  instance-sup.: 6.753231, local-group-sup.: 6.719535, group-sup.: 1.683312, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:45-epoch (1000/3906): total loss 5.048002,  instance-sup.: 6.750852, local-group-sup.: 6.717612, group-sup.: 1.675542, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:45-epoch (1500/3906): total loss 5.046512,  instance-sup.: 6.749643, local-group-sup.: 6.717291, group-sup.: 1.672603, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:45-epoch (2000/3906): total loss 5.048046,  instance-sup.: 6.751122, local-group-sup.: 6.718724, group-sup.: 1.674292, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:45-epoch (2500/3906): total loss 5.049516,  instance-sup.: 6.752563, local-group-sup.: 6.719883, group-sup.: 1.676100, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:45-epoch (3000/3906): total loss 5.049763,  instance-sup.: 6.752747, local-group-sup.: 6.719860, group-sup.: 1.676680, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:45-epoch (3500/3906): total loss 5.049528,  instance-sup.: 6.752420, local-group-sup.: 6.719339, group-sup.: 1.676826, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:45-epoch: loss: 5.067121, instance-sup.: 6.763002, local-group-sup.: 6.734945, group-sup.: 1.703416, lr: 0.000500, wd: 0.000000,  remaining time 38.25 hours
+INFO:46-epoch (500/3906): total loss 5.043245,  instance-sup.: 6.748040, local-group-sup.: 6.708994, group-sup.: 1.672700, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:46-epoch (1000/3906): total loss 5.042184,  instance-sup.: 6.749523, local-group-sup.: 6.707742, group-sup.: 1.669288, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:46-epoch (1500/3906): total loss 5.046594,  instance-sup.: 6.752908, local-group-sup.: 6.710685, group-sup.: 1.676189, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:46-epoch (2000/3906): total loss 5.049997,  instance-sup.: 6.755439, local-group-sup.: 6.712749, group-sup.: 1.681803, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:46-epoch (2500/3906): total loss 5.051112,  instance-sup.: 6.756986, local-group-sup.: 6.713780, group-sup.: 1.682569, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:46-epoch (3000/3906): total loss 5.051923,  instance-sup.: 6.757220, local-group-sup.: 6.713982, group-sup.: 1.684567, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:46-epoch (3500/3906): total loss 5.052326,  instance-sup.: 6.757171, local-group-sup.: 6.714127, group-sup.: 1.685680, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:46-epoch: loss: 5.055984, instance-sup.: 6.758051, local-group-sup.: 6.720972, group-sup.: 1.688930, lr: 0.000500, wd: 0.000000,  remaining time 37.58 hours
+INFO:47-epoch (500/3906): total loss 5.033085,  instance-sup.: 6.740406, local-group-sup.: 6.706768, group-sup.: 1.652082, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:47-epoch (1000/3906): total loss 5.033551,  instance-sup.: 6.740967, local-group-sup.: 6.706814, group-sup.: 1.652873, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:47-epoch (1500/3906): total loss 5.038543,  instance-sup.: 6.744880, local-group-sup.: 6.710777, group-sup.: 1.659972, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:47-epoch (2000/3906): total loss 5.043529,  instance-sup.: 6.748399, local-group-sup.: 6.714505, group-sup.: 1.667684, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:47-epoch (2500/3906): total loss 5.044686,  instance-sup.: 6.749535, local-group-sup.: 6.715140, group-sup.: 1.669382, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:47-epoch (3000/3906): total loss 5.046421,  instance-sup.: 6.750611, local-group-sup.: 6.716245, group-sup.: 1.672406, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:47-epoch (3500/3906): total loss 5.048626,  instance-sup.: 6.751828, local-group-sup.: 6.718336, group-sup.: 1.675715, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:47-epoch: loss: 5.058268, instance-sup.: 6.757790, local-group-sup.: 6.728218, group-sup.: 1.688795, lr: 0.000500, wd: 0.000000,  remaining time 36.85 hours
+INFO:48-epoch (500/3906): total loss 5.042872,  instance-sup.: 6.744539, local-group-sup.: 6.718339, group-sup.: 1.665738, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:48-epoch (1000/3906): total loss 5.039231,  instance-sup.: 6.744411, local-group-sup.: 6.718132, group-sup.: 1.655150, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:48-epoch (1500/3906): total loss 5.042920,  instance-sup.: 6.746601, local-group-sup.: 6.720520, group-sup.: 1.661639, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:48-epoch (2000/3906): total loss 5.046152,  instance-sup.: 6.749154, local-group-sup.: 6.722783, group-sup.: 1.666518, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:48-epoch (2500/3906): total loss 5.048614,  instance-sup.: 6.750943, local-group-sup.: 6.724656, group-sup.: 1.670243, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:48-epoch (3000/3906): total loss 5.048423,  instance-sup.: 6.751017, local-group-sup.: 6.724798, group-sup.: 1.669454, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:48-epoch (3500/3906): total loss 5.049278,  instance-sup.: 6.751414, local-group-sup.: 6.725045, group-sup.: 1.671375, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:48-epoch: loss: 5.053844, instance-sup.: 6.754903, local-group-sup.: 6.727056, group-sup.: 1.679572, lr: 0.000500, wd: 0.000000,  remaining time 36.16 hours
+INFO:49-epoch (500/3906): total loss 5.041735,  instance-sup.: 6.746406, local-group-sup.: 6.722841, group-sup.: 1.655959, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:49-epoch (1000/3906): total loss 5.040420,  instance-sup.: 6.745506, local-group-sup.: 6.722185, group-sup.: 1.653568, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:49-epoch (1500/3906): total loss 5.044419,  instance-sup.: 6.748273, local-group-sup.: 6.724365, group-sup.: 1.660618, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:49-epoch (2000/3906): total loss 5.046829,  instance-sup.: 6.750267, local-group-sup.: 6.726762, group-sup.: 1.663457, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.6
+INFO:49-epoch (2500/3906): total loss 5.049490,  instance-sup.: 6.752377, local-group-sup.: 6.728763, group-sup.: 1.667329, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:49-epoch (3000/3906): total loss 5.049957,  instance-sup.: 6.752623, local-group-sup.: 6.728950, group-sup.: 1.668298, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:49-epoch (3500/3906): total loss 5.050697,  instance-sup.: 6.752429, local-group-sup.: 6.730220, group-sup.: 1.669442, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:49-epoch: loss: 5.049367, instance-sup.: 6.753176, local-group-sup.: 6.723243, group-sup.: 1.671683, lr: 0.000500, wd: 0.000000,  remaining time 35.49 hours
+INFO:50-epoch (500/3906): total loss 5.025425,  instance-sup.: 6.736815, local-group-sup.: 6.702894, group-sup.: 1.636567, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:50-epoch (1000/3906): total loss 5.026084,  instance-sup.: 6.738604, local-group-sup.: 6.703144, group-sup.: 1.636504, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:50-epoch (1500/3906): total loss 5.032577,  instance-sup.: 6.742957, local-group-sup.: 6.707650, group-sup.: 1.647122, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:50-epoch (2000/3906): total loss 5.036569,  instance-sup.: 6.746172, local-group-sup.: 6.710329, group-sup.: 1.653206, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:50-epoch (2500/3906): total loss 5.039713,  instance-sup.: 6.748398, local-group-sup.: 6.712617, group-sup.: 1.658123, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:50-epoch (3000/3906): total loss 5.040151,  instance-sup.: 6.748853, local-group-sup.: 6.713096, group-sup.: 1.658503, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
+INFO:50-epoch (3500/3906): total loss 5.041023,  instance-sup.: 6.749253, local-group-sup.: 6.714586, group-sup.: 1.659230, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.4
+INFO:50-epoch: loss: 5.044720, instance-sup.: 6.750599, local-group-sup.: 6.719931, group-sup.: 1.663628, lr: 0.000500, wd: 0.000000,  remaining time 34.82 hours
+INFO:51-epoch (500/3906): total loss 5.044628,  instance-sup.: 6.743595, local-group-sup.: 6.730504, group-sup.: 1.659784, lr: 5.0000e-04, wd: 0.0000e+00, weak aug. ratio: 0.5
