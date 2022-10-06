@@ -4,11 +4,11 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --gres=gpu:a100:1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=200GB
+#SBATCH --mem=240GB
 #SBATCH --time=48:00:00
 #SBATCH --job-name=mugs_eval_linear_wds
 #SBATCH --output=mugs_eval_linear_wds_%A_%a.out
-#SBATCH --array=0-11
+#SBATCH --array=4
 
 export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)

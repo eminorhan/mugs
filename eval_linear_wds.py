@@ -96,7 +96,6 @@ def eval_linear(args):
                         )
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size_per_gpu, num_workers=args.num_workers, pin_memory=True)
     print(f"Data loaded with train and val imgs.")
-    print(len(list(train_loader)))
 
     # set optimizer
     optimizer = torch.optim.Adam(linear_classifier.parameters(), args.lr)
