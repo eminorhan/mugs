@@ -20,50 +20,50 @@ module load cuda/11.3.1
 
 #srun python -u /scratch/eo41/mugs/main.py \
 #	--use_fp16 false \
-#	--arch "vit_small" \
+#	--arch "vit_base" \
 #	--batch_size_per_gpu 64 \
 #	--num_workers 8 \
 #	--freeze_last_layer 0 \
 #	--lr 0.0005 \
 #	--min_lr 0.0005 \
-#	--output_dir "/scratch/eo41/mugs/models_vits16" \
+#	--output_dir "/scratch/eo41/mugs/models_vitb16" \
 #	--data_path "/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar" \
-#	--save_prefix "say_5fps_vits16"
+#	--save_prefix "say_5fps_vitb16"
+
+#srun python -u /scratch/eo41/mugs/main.py \
+#	--use_fp16 false \
+#	--arch "vit_base" \
+#	--batch_size_per_gpu 64 \
+#	--num_workers 8 \
+#	--freeze_last_layer 0 \
+#	--lr 0.0005 \
+#	--min_lr 0.0005 \
+#	--output_dir "/scratch/eo41/mugs/models_vitb16" \
+#	--data_path "/scratch/eo41/data/saycam/S_5fps_300s_{000000..000003}.tar" \
+#	--save_prefix "s_5fps_vitb16"
+
+#srun python -u /scratch/eo41/mugs/main.py \
+#	--use_fp16 false \
+#	--arch "vit_base" \
+#	--batch_size_per_gpu 64 \
+#	--num_workers 4 \
+#	--freeze_last_layer 0 \
+#	--lr 0.0005 \
+#	--min_lr 0.0005 \
+#	--output_dir "/scratch/eo41/mugs/models_vitb16" \
+#	--data_path "/scratch/eo41/data/saycam/A_5fps_300s_{000000..000002}.tar" \
+#	--save_prefix "a_5fps_vitb16"
 
 srun python -u /scratch/eo41/mugs/main.py \
 	--use_fp16 false \
-	--arch "vit_small" \
+	--arch "vit_base" \
 	--batch_size_per_gpu 64 \
-	--num_workers 8 \
+	--num_workers 4 \
 	--freeze_last_layer 0 \
 	--lr 0.0005 \
 	--min_lr 0.0005 \
-	--output_dir "/scratch/eo41/mugs/models_vits16" \
-	--data_path "/scratch/eo41/data/saycam/S_5fps_300s_{000000..000003}.tar" \
-	--save_prefix "s_5fps_vits16"
-
-#srun python -u /scratch/eo41/mugs/main.py \
-#	--use_fp16 false \
-#	--arch "vit_small" \
-#	--batch_size_per_gpu 64 \
-#	--num_workers 4 \
-#	--freeze_last_layer 0 \
-#	--lr 0.0005 \
-#	--min_lr 0.0005 \
-#	--output_dir "/scratch/eo41/mugs/models_vits16" \
-#	--data_path "/scratch/eo41/data/saycam/A_5fps_300s_{000000..000002}.tar" \
-#	--save_prefix "a_5fps_vits16"
-
-#srun python -u /scratch/eo41/mugs/main.py \
-#	--use_fp16 false \
-#	--arch "vit_small" \
-#	--batch_size_per_gpu 64 \
-#	--num_workers 4 \
-#	--freeze_last_layer 0 \
-#	--lr 0.0005 \
-#	--min_lr 0.0005 \
-#	--output_dir "/scratch/eo41/mugs/models_vits16" \
-#	--data_path "/scratch/eo41/data/saycam/Y_5fps_300s_{000000..000002}.tar" \
-#	--save_prefix "y_5fps_vits16"
+	--output_dir "/scratch/eo41/mugs/models_vitb16" \
+	--data_path "/scratch/eo41/data/saycam/Y_5fps_300s_{000000..000002}.tar" \
+	--save_prefix "y_5fps_vitb16"
 		
 echo "Done"
