@@ -1,8 +1,14 @@
 # File extensions
 *.pt
 *.pth
+*.ckpt
 *.tar
+*.npz
 *.out
+*.jpg
+*.png
+*.mp4
 
 # Directories
-/__pycache__
+**/__pycache__/
+optimizing_images/
