@@ -6,7 +6,7 @@
 #SBATCH --time=48:00:00
 #SBATCH --job-name=mugs_lin_ecoset
 #SBATCH --output=mugs_lin_ecoset_%A_%a.out
-#SBATCH --array=0-11
+#SBATCH --array=9-11
 
 module purge
 module load cuda/11.3.1
