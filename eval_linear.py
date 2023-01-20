@@ -44,7 +44,7 @@ def eval_linear(args):
 
     # load weights to evaluate
     if not args.save_prefix.startswith("random"): 
-        utils.load_pretrained_weights(model, args.pretrained_weights, args.checkpoint_key, args.arch, args.patch_size)
+        utils.load_pretrained_weights(model, args.pretrained_weights, args.checkpoint_key)
         print(f"Model {args.arch} built. Loaded checkpoint at {args.pretrained_weights}.")
     else:
         print(f"Model {args.arch} built. Using random (untrained) weights.")

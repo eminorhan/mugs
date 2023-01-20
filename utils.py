@@ -639,9 +639,7 @@ class AllReduce(torch.autograd.Function):
         return grads
 
 
-def load_pretrained_weights(
-    model, pretrained_weights, checkpoint_key, model_name, patch_size
-):
+def load_pretrained_weights(model, pretrained_weights, checkpoint_key):
     if os.path.isfile(pretrained_weights):
         state_dict = torch.load(pretrained_weights, map_location="cpu")
         if checkpoint_key is not None and checkpoint_key in state_dict:
@@ -654,15 +652,9 @@ def load_pretrained_weights(
         # remove `encoder.` prefix induced by MAE
         state_dict = {k.replace("encoder.", ""): v for k, v in state_dict.items()}
         msg = model.load_state_dict(state_dict, strict=False)
-        print(
-            "Pretrained weights found at {} and loaded with msg: {}".format(
-                pretrained_weights, msg
-            )
-        )
+        print("Pretrained weights found at {} and loaded with msg: {}".format(pretrained_weights, msg))
     else:
-        print(
-            "There is no reference weights available for this model => We use random weights."
-        )
+        print("There is no reference weights available for this model => We use random weights.")
 
 
 @torch.no_grad()
@@ -671,9 +663,7 @@ def concat_all_gather(tensor):
     Performs all_gather operation on the provided tensors.
     *** Warning ***: torch.distributed.all_gather has no gradient.
     """
-    tensors_gather = [
-        torch.ones_like(tensor) for _ in range(torch.distributed.get_world_size())
-    ]
+    tensors_gather = [torch.ones_like(tensor) for _ in range(torch.distributed.get_world_size())]
     torch.distributed.all_gather(tensors_gather, tensor, async_op=False)
 
     output = torch.cat(tensors_gather, dim=0)
