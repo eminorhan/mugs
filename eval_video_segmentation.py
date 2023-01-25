@@ -256,7 +256,6 @@ if __name__ == '__main__':
     parser.add_argument("--checkpoint_key", default="teacher", type=str, help='Key to use in the checkpoint (example: "teacher")')
     parser.add_argument('--output_dir', default=".", help='Path where to save segmentations')
     parser.add_argument('--data_path', default='/path/to/davis/', type=str)
-    parser.add_argument("--save_prefix", default="", type=str, help="""prefix for saving checkpoint and log files""")
     parser.add_argument("--n_last_frames", type=int, default=7, help="number of preceeding frames")
     parser.add_argument("--size_mask_neighborhood", default=12, type=int, help="We restrict the set of source nodes considered to a spatial neighborhood of query node")
     parser.add_argument("--topk", type=int, default=5, help="accumulate label from top k neighbors")
@@ -269,14 +268,10 @@ if __name__ == '__main__':
     # building network
     model = vits.__dict__[args.arch](patch_size=args.patch_size, num_classes=0)
     print(f"Model {args.arch} {args.patch_size}x{args.patch_size} built.")
-    model.cuda()
-    
     # load weights to evaluate
-    if not args.save_prefix.startswith("random"): 
-        utils.load_pretrained_weights(model, args.pretrained_weights, args.checkpoint_key)
-        print(f"Model {args.arch} built. Loaded checkpoint at {args.pretrained_weights}.")
-    else:
-        print(f"Model {args.arch} built. Using random (untrained) weights.")
+    utils.load_pretrained_weights(model, args.pretrained_weights, args.checkpoint_key)
+    print(f"Model {args.arch} built. Loaded checkpoint at {args.pretrained_weights}.")
+    model.cuda()
 
     for param in model.parameters():
         param.requires_grad = False
