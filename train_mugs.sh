@@ -1,6 +1,5 @@
 #!/bin/bash
 
-##SBATCH --account=cds
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --gres=gpu:a100:4
@@ -15,10 +14,7 @@ export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
 export WORLD_SIZE=4
 
-module purge
-module load cuda/11.3.1
-
-#srun python -u /scratch/eo41/mugs/main.py \
+#srun python -u /scratch/eo41/mugs/train_mugs.py \
 #	--use_fp16 false \
 #	--arch "vit_base" \
 #	--batch_size_per_gpu 64 \
@@ -30,7 +26,7 @@ module load cuda/11.3.1
 #	--data_path "/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar" \
 #	--save_prefix "say_5fps_vitb16"
 
-#srun python -u /scratch/eo41/mugs/main.py \
+#srun python -u /scratch/eo41/mugs/train_mugs.py \
 #	--use_fp16 false \
 #	--arch "vit_base" \
 #	--batch_size_per_gpu 64 \
@@ -42,7 +38,7 @@ module load cuda/11.3.1
 #	--data_path "/scratch/eo41/data/saycam/S_5fps_300s_{000000..000003}.tar" \
 #	--save_prefix "s_5fps_vitb16"
 
-#srun python -u /scratch/eo41/mugs/main.py \
+#srun python -u /scratch/eo41/mugs/train_mugs.py \
 #	--use_fp16 false \
 #	--arch "vit_base" \
 #	--batch_size_per_gpu 64 \
@@ -54,7 +50,7 @@ module load cuda/11.3.1
 #	--data_path "/scratch/eo41/data/saycam/A_5fps_300s_{000000..000002}.tar" \
 #	--save_prefix "a_5fps_vitb16"
 
-srun python -u /scratch/eo41/mugs/main.py \
+srun python -u /scratch/eo41/mugs/train_mugs.py \
 	--use_fp16 false \
 	--arch "vit_base" \
 	--batch_size_per_gpu 64 \
